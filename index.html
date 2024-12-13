@@ -28,8 +28,8 @@
 
     <script>
         async function fetchSubscriberCount() {
-            const apiKey = 'AIzaSyBIA2ioXEXEHR3ddvo39xUzmZyiFXmnBKc';
-            const channelId = 'UCzYtRz40nccFckP_xc9Vj4A';
+            const apiKey = 'YOUR_API_KEY';
+            const channelId = 'YOUR_CHANNEL_ID';
             const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`;
 
             try {
@@ -45,10 +45,23 @@
             }
         }
 
+        function calculateNextHourTimeout() {
+            const now = new Date();
+            const nextHour = new Date();
+            nextHour.setHours(now.getHours() + 1);
+            nextHour.setMinutes(0, 0, 0);
+            return nextHour - now;
+        }
+
         // Fetch subscriber count on page load
         fetchSubscriberCount();
-        // Set interval to fetch subscriber count every hour (3600000 ms)
-        setInterval(fetchSubscriberCount, 3600000);
+
+        // Calculate time until the next hour and set a timeout for the initial fetch
+        const timeUntilNextHour = calculateNextHourTimeout();
+        setTimeout(() => {
+            fetchSubscriberCount();
+            setInterval(fetchSubscriberCount, 3600000); // Set interval to fetch every hour (3600000 ms)
+        }, timeUntilNextHour);
     </script>
 </body>
 </html>
