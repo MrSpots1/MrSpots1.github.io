@@ -17,6 +17,14 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .history-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -24,44 +32,35 @@
         <h1>YouTube Subscriber Count</h1>
         <p><strong>Subscriber Count:</strong> <span id="subscriberCount">Loading...</span></p>
         <p><strong>Updated At:</strong> <span id="currentTime">Loading...</span></p>
+        <div class="history">
+            <h2>Previous Updates:</h2>
+            <div id="updateHistory">Loading...</div>
+        </div>
     </div>
 
     <script>
-        async function fetchSubscriberCount() {
-            const apiKey = 'YOUR_API_KEY';
-            const channelId = 'YOUR_CHANNEL_ID';
-            const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                const subscriberCount = data.items[0].statistics.subscriberCount;
-                document.getElementById('subscriberCount').textContent = subscriberCount;
-                
-                const currentTime = new Date().toLocaleString();
-                document.getElementById('currentTime').textContent = currentTime;
-            } catch (error) {
-                console.error('Error fetching subscriber count:', error);
-            }
+        async function fetchUpdates() {
+            const response = await fetch('updates.json');
+            const data = await response.json();
+            updatePage(data);
         }
 
-        function calculateNextHourTimeout() {
-            const now = new Date();
-            const nextHour = new Date();
-            nextHour.setHours(now.getHours() + 1);
-            nextHour.setMinutes(0, 0, 0);
-            return nextHour - now;
+        function updatePage(data) {
+            const latestUpdate = data[data.length - 1];
+            document.getElementById('subscriberCount').textContent = latestUpdate.subscriberCount;
+            document.getElementById('currentTime').textContent = latestUpdate.time;
+
+            const historyContainer = document.getElementById('updateHistory');
+            historyContainer.innerHTML = '';
+            data.slice(0, -1).reverse().forEach(update => {
+                const updateItem = document.createElement('div');
+                updateItem.className = 'history-item';
+                updateItem.innerHTML = `<strong>${update.time}</strong>: ${update.subscriberCount} subscribers`;
+                historyContainer.appendChild(updateItem);
+            });
         }
 
-        // Fetch subscriber count on page load
-        fetchSubscriberCount();
-
-        // Calculate time until the next hour and set a timeout for the initial fetch
-        const timeUntilNextHour = calculateNextHourTimeout();
-        setTimeout(() => {
-            fetchSubscriberCount();
-            setInterval(fetchSubscriberCount, 3600000); // Set interval to fetch every hour (3600000 ms)
-        }, timeUntilNextHour);
+        fetchUpdates();
     </script>
 </body>
 </html>
