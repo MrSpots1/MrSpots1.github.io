@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         color: #fff;
-        background: #000;
+        background: none;
     }
 
     canvas {
@@ -33,7 +33,6 @@
         background: rgba(0, 0, 0, 0.6);
         padding: 50px 40px;
         border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
         max-width: 500px;
         width: 90%;
         position: relative;
@@ -82,7 +81,7 @@
         new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
     );
     targetTime.setFullYear(2026, 1, 3);
-    targetTime.setHours(15, 0, 0, 0); 
+    targetTime.setHours(15, 0, 0, 0);
 
     function updateCountdown() {
         const now = new Date(
@@ -144,21 +143,30 @@
             this.offset += this.speed;
         }
     }
-
+    const mult = 0.6;
     const waves = [
-        new Wave('rgba(255,0,150,0.3)', 50, 200, 0.02, height/2 + 20),
-        new Wave('rgba(0,200,255,0.3)', 60, 250, 0.015, height/2 - 30),
-        new Wave('rgba(255,255,0,0.2)', 40, 300, 0.01, height/2 + 50),
+        new Wave('rgba(255,0,150,0.3)', 50, 200, 0.02*mult, height/2 + 20),
+        new Wave('rgba(0,200,255,0.3)', 60, 250, 0.015*mult, height/2 - 30),
+        new Wave('rgba(255,255,0,0.2)', 40, 300, 0.01*mult, height/2 + 50),
     ];
 
     function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for(let wave of waves) {
-            wave.update();
-            wave.draw(ctx);
-        }
-        requestAnimationFrame(animate);
+    // Draw gradient background
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#1f1c2c');
+    gradient.addColorStop(1, '#6c6681');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw waves
+    for (let wave of waves) {
+        wave.update();
+        wave.draw(ctx);
     }
+
+    requestAnimationFrame(animate);
+}
+
 
     animate();
 </script>
