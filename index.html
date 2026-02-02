@@ -57,18 +57,11 @@
     </div>
 
     <script>
-        function getNextFivePMET() {
-            const now = new Date();
-            const etNow = new Date(
-                now.toLocaleString("en-US", { timeZone: "America/New_York" })
+            const targetTime = new Date(
+                new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
             );
-            const target = new Date(etNow);
-            target.setHours(17, 0, 0, 0); // 5 PM ET
-            if (etNow >= target) target.setDate(target.getDate() + 1);
-            return target;
-        }
-
-        const targetTime = getNextFivePMET();
+            targetTime.setFullYear(2026, 1, 2);
+            targetTime.setHours(17, 0, 0, 0); 
 
         function updateCountdown() {
             const now = new Date(
