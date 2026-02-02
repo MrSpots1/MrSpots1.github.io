@@ -13,37 +13,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden; /* prevent scrollbars */
-            position: relative;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
             color: #fff;
         }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                #1f1c2c,
-                #928dab,
-                #3a1c71,
-                #ff6f91,
-                #1f1c2c
-            );
-            animation: rotateGradient 60s linear infinite;
-            z-index: -1;
-        }
-        
-        @keyframes rotateGradient {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         .container {
-            position: relative;
             text-align: center;
             background: rgba(0, 0, 0, 0.6);
             padding: 50px 40px;
@@ -52,25 +25,21 @@
             max-width: 500px;
             width: 90%;
         }
-        
         h1 {
             font-size: 1.8rem;
             margin-bottom: 30px;
             text-shadow: 0 0 10px #ffcc00;
         }
-        
         #countdown {
             font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
             letter-spacing: 2px;
             animation: glow 1.5s infinite alternate;
         }
-        
         @keyframes glow {
             from { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; }
             to { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ff9900; }
         }
-        
         @media (max-width: 500px) {
             #countdown {
                 font-size: 2.2rem;
@@ -79,8 +48,7 @@
                 font-size: 1.5rem;
             }
         }
-        </style>
-
+    </style>
 </head>
 <body>
     <div class="container">
@@ -110,7 +78,7 @@
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / (1000 * 60)) % 60);
             const seconds = Math.floor((diff / 1000) % 60);
-            
+
             document.getElementById("countdown").textContent =
                 `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
