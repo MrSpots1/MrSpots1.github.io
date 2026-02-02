@@ -1,90 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProntoPVP 2.7 Countdown</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #1f1c2c, #928dab);
-            color: #fff;
-        }
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProntoPVP 2.7 Countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background: #000;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* put behind content */
+    }
+
+    .container {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 50px 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        z-index: 1;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+        text-shadow: 0 0 10px #ffcc00;
+    }
+
+    #countdown {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3rem;
+        letter-spacing: 2px;
+        animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+        from { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; }
+        to { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ff9900; }
+    }
+
+    @media (max-width: 500px) {
+        #countdown {
+            font-size: 2.2rem;
         }
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px #ffcc00;
+            font-size: 1.5rem;
         }
-        #countdown {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            letter-spacing: 2px;
-            animation: glow 1.5s infinite alternate;
-        }
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; }
-            to { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ff9900; }
-        }
-        @media (max-width: 500px) {
-            #countdown {
-                font-size: 2.2rem;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Time until ProntoPVP 2.7 Releases..</h1>
-        <div id="countdown">Loading...</div>
-    </div>
+<canvas id="bgCanvas"></canvas>
 
-    <script>
-            const targetTime = new Date(
-                new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
-            );
-            targetTime.setFullYear(2026, 1, 2);
-            targetTime.setHours(17, 0, 0, 0); 
+<div class="container">
+    <h1>Time until ProntoPVP 2.7 Releases..</h1>
+    <div id="countdown">Loading...</div>
+</div>
 
-        function updateCountdown() {
-            const now = new Date(
-                new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
-            );
-            const diff = targetTime - now;
+<script>
+    // Countdown Timer
+    const targetTime = new Date(
+        new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+    );
+    targetTime.setFullYear(2026, 1, 3);
+    targetTime.setHours(15, 0, 0, 0); 
 
-            if (diff <= 0) {
-                document.getElementById("countdown").textContent = "Released!";
-                return;
-            }
+    function updateCountdown() {
+        const now = new Date(
+            new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+        );
+        const diff = targetTime - now;
 
-           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-
-            document.getElementById("countdown").textContent =
-                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        if (diff <= 0) {
+            document.getElementById("countdown").textContent = "Released!";
+            return;
         }
 
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("countdown").textContent =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Canvas Background
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    class Wave {
+        constructor(color, amplitude, wavelength, speed, yOffset) {
+            this.color = color;
+            this.amplitude = amplitude;
+            this.wavelength = wavelength;
+            this.speed = speed;
+            this.yOffset = yOffset;
+            this.offset = 0;
+        }
+
+        draw(ctx) {
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            for(let x = 0; x <= width; x += 1) {
+                let y = this.amplitude * Math.sin((x / this.wavelength) + this.offset) + this.yOffset;
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        update() {
+            this.offset += this.speed;
+        }
+    }
+
+    const waves = [
+        new Wave('rgba(255,0,150,0.3)', 50, 200, 0.02, height/2 + 20),
+        new Wave('rgba(0,200,255,0.3)', 60, 250, 0.015, height/2 - 30),
+        new Wave('rgba(255,255,0,0.2)', 40, 300, 0.01, height/2 + 50),
+    ];
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for(let wave of waves) {
+            wave.update();
+            wave.draw(ctx);
+        }
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
 </body>
 </html>
