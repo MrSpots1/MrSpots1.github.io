@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntoPVP 2.7 Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            display: inline-block;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #countdown {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time until ProntoPVP 2.7 Releases..</h1>
+        <div id="countdown">Loading...</div>
+    </div>
+
+    <script>
+        function getNextFivePMET() {
+            const now = new Date();
+
+            // Get current time in ET
+            const etNow = new Date(
+                now.toLocaleString("en-US", { timeZone: "America/New_York" })
+            );
+
+            const target = new Date(etNow);
+            target.setHours(17, 0, 0, 0); // 5:00 PM ET
+
+            // If already past 5 PM ET, move to tomorrow
+            if (etNow >= target) {
+                target.setDate(target.getDate() + 1);
+            }
+
+            return target;
+        }
+
+        const targetTime = getNextFivePMET();
+
+        function updateCountdown() {
+            const now = new Date(
+                new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+            );
+
+            const diff = targetTime - now;
+
+            if (diff <= 0) {
+                document.getElementById("countdown").textContent = "Released!";
+                return;
+            }
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("countdown").textContent =
+                `${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
