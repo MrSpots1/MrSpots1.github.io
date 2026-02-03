@@ -144,11 +144,11 @@
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
-    const particles = Array.from({ length: 200 }, () => ({
+    const particles = Array.from({ length: 40 }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         r: Math.random() * 2 + 1,
-        vy: Math.random() * 0.5 + 0.1
+        vy: Math.random() * 0.3 + 0.1
     }));
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
@@ -192,7 +192,6 @@
         new Wave('rgba(255,0,150,0.3)', 50, 200, 0.02*mult, height/2 + 20),
         new Wave('rgba(0,200,255,0.3)', 60, 250, 0.015*mult, height/2 - 30),
         new Wave('rgba(255,255,0,0.2)', 40, 300, 0.01*mult, height/2 + 50),
-        new Wave('rgba(64,255,0,0.2)', 70, 310, 0.007*mult, height/2),
     ];
 
     function animate() {
